@@ -1,0 +1,197 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: #808080;
+  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Prevent text selection during experiment */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Screen container */
+.screen-container {
+  max-width: 720px;
+  width: 90%;
+  padding: 2rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.screen-container h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.screen-container h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.screen-container p {
+  margin-bottom: 1rem;
+}
+
+.screen-container ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.screen-container li {
+  margin-bottom: 0.4rem;
+}
+
+/* Primary button */
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-primary:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Experiment display area — full screen neutral gray */
+.experiment-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  outline: none;
+}
+
+.experiment-area .fixation {
+  font-size: 3rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.experiment-area .feedback-text {
+  font-size: 2rem;
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.experiment-area .phase-instructions {
+  max-width: 600px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.experiment-area .phase-instructions h2 {
+  margin-bottom: 0.5rem;
+}
+
+.experiment-area .phase-instructions p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* Progress bar */
+.progress-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 100;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #60a5fa;
+  transition: width 0.3s ease;
+}
+
+/* Completion code */
+.completion-code {
+  display: inline-block;
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  font-family: monospace;
+  background: #e0e7ff;
+  border: 2px dashed #6366f1;
+  border-radius: 8px;
+  letter-spacing: 2px;
+}
+
+/* Nav buttons row */
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #cbd5e1;
+}

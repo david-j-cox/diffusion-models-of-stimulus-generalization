@@ -1,0 +1,167 @@
+# Default Pilot Study Configuration
+# ===================================
+# Single-condition design with orientation stimuli.
+# S+ at 0.50 (90 degrees), 11 probe positions, no discrimination phase.
+#
+# MODIFY HERE: Change target_x, probe_positions, phase parameters,
+# feedback rules, or add conditions for between-subjects designs.
+
+name: "default_pilot"
+version: "1.0.0"
+
+# ── Stimulus definition ──────────────────────────────────────────────────────
+stimulus:
+  family: "orientation"                # Stimulus type rendered in the browser
+  dimension_label: "Line Orientation"
+  axis_min: 20.0                       # Rendered min (degrees)
+  axis_max: 160.0                      # Rendered max (degrees)
+  axis_unit: "degrees"
+  target_x: 0.50                       # Normalized S+ position [0, 1]
+
+  # Probe grid — symmetric around center of axis
+  # MODIFY HERE: Change probe density or positions
+  probe_positions:
+    - 0.10
+    - 0.18
+    - 0.26
+    - 0.34
+    - 0.42
+    - 0.50   # This is also S+; included so probes span the full range
+    - 0.58
+    - 0.66
+    - 0.74
+    - 0.82
+    - 0.90
+
+  # S- positions (used only if discrimination phase is enabled)
+  s_minus_positions: null
+
+  # Similarity kernel parameters
+  # MODIFY HERE: Adjust kernel widths for different generalization assumptions
+  similarity:
+    gaussian_sigma: 0.15
+    exponential_tau: 0.10
+
+# ── Between-subjects conditions ──────────────────────────────────────────────
+# MODIFY HERE: Add conditions for counterbalancing target location, schedule, etc.
+conditions:
+  - name: "center_target"
+    target_x: 0.50
+
+# ── Timing (milliseconds) ────────────────────────────────────────────────────
+timing:
+  iti_min_ms: 800
+  iti_max_ms: 1200
+  fixation_ms: 500
+  stimulus_ms: 2000          # Stimulus display duration
+  response_window_ms: 2000   # Total window from stimulus onset (overlaps stimulus_ms)
+  feedback_ms: 1000
+  # MODIFY HERE: Adjust timing for different participant populations
+
+# ── Feedback rules ────────────────────────────────────────────────────────────
+feedback:
+  positive_message: "+1 Point!"
+  negative_message: ""                   # Shown on miss during training (empty = no message)
+  neutral_message: ""                    # Shown on probe trials (empty = no feedback)
+  show_points: true
+  # MODIFY HERE: Add sound, visual effects, or alternative reinforcement tokens
+
+# ── Response configuration ────────────────────────────────────────────────────
+response:
+  key: " "                              # Spacebar
+  key_label: "SPACEBAR"
+  mode: "go_nogo"                       # "go_nogo" or "two_choice"
+  # MODIFY HERE: Switch to two_choice for classification variant
+
+# ── Randomization constraints ─────────────────────────────────────────────────
+randomization:
+  max_run_same_type: 3
+  max_run_same_stimulus: 2
+  # MODIFY HERE: Tighten or loosen pseudorandomization
+
+# ── Stability criterion for training ─────────────────────────────────────────
+stability:
+  min_trials: 20
+  window_size: 10
+  threshold: 0.80
+  # MODIFY HERE: Adjust for stricter/looser acquisition criteria
+
+# ── Phase definitions ────────────────────────────────────────────────────────
+# MODIFY HERE: Add, remove, or reorder phases. Set enabled: false to skip.
+phases:
+
+  # Phase 0 — Practice
+  - id: "practice"
+    type: "practice"
+    enabled: true
+    block_index: 0
+    target_count: 8
+    reinforcement_available: true
+    feedback_type: "points"
+    instructions: |
+      This is a practice round. Press SPACEBAR when you see the target line.
+      You will receive feedback on each trial.
+
+  # Phase 1 — Baseline S+ Training
+  - id: "baseline_training"
+    type: "training"
+    enabled: true
+    block_index: 1
+    target_count: 30                     # Minimum trials; stability criterion also applies
+    reinforcement_available: true
+    feedback_type: "points"
+    use_stability_criterion: true        # End phase when criterion met (after min trials)
+    max_trials: 60                       # Safety cap
+    attention_check_count: 2
+
+  # Phase 2 — Early Generalization Probes
+  - id: "early_probes"
+    type: "probe"
+    enabled: true
+    block_index: 2
+    probe_repetitions: 2                 # Reps per probe position
+    target_in_probe_count: 10            # Reinforced S+ trials interleaved
+    probe_reinforcement: false
+    feedback_type: "points"
+    attention_check_count: 1
+
+  # Phase 3 — Discrimination (disabled by default)
+  # MODIFY HERE: Set enabled: true and configure S- to activate
+  - id: "discrimination"
+    type: "discrimination"
+    enabled: false
+    block_index: 3
+    target_count: 20
+    s_minus_count: 20
+    reinforcement_available: true
+    feedback_type: "points"
+    s_minus_feedback_type: "none"
+
+  # Phase 4 — Late Generalization Assessment
+  - id: "late_probes"
+    type: "probe"
+    enabled: true
+    block_index: 4
+    probe_repetitions: 4                 # More reps for stable gradient estimate
+    target_in_probe_count: 15
+    probe_reinforcement: false
+    feedback_type: "points"
+    attention_check_count: 2
+
+# ── Quality control ───────────────────────────────────────────────────────────
+quality_control:
+  min_rt_ms: 100                         # Flag trials faster than this
+  max_missed_fraction: 0.50              # Exclude if >50% missed during training
+  max_focus_losses: 10                   # Exclude if tab-switch count exceeds this
+  check_duplicate_ids: true
+  practice_failure_threshold: 0.50       # Exclude if practice accuracy below this
+  # MODIFY HERE: Adjust exclusion thresholds
+
+# ── UI options ────────────────────────────────────────────────────────────────
+ui:
+  show_progress: false                   # Hide progress bar to avoid demand effects
+  require_fullscreen: false              # Recommend but don't require
+  warn_mobile: true
+  background_color: "#808080"            # Neutral gray
+  stimulus_size_px: 200
+  # MODIFY HERE: Adjust display parameters
